@@ -6,15 +6,9 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=7.2",
-		"codeigniter4/framework": "^4",
-        "phpoffice/phpspreadsheet": "^1.15"
+		"codeigniter4/framework": "^4.0"
 	},
 	"require-dev": {
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Tests\\Support\\": "tests/_support"
-		}
 	},
 	"scripts": {
 		"post-update-cmd": [
