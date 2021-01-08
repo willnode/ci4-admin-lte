@@ -10,7 +10,7 @@
       <div class="container" style="max-width: 540px;">
         <div class="card">
           <div class="card-body">
-            <form method="post">
+            <form enctype="multipart/form-data" method="post">
               <div class="d-flex mb-3">
                 <h1 class="h3 mb-0 mr-auto">Edit User</h1>
                 <a href="/user/manage/" class="btn btn-outline-secondary ml-2">Back</a>
@@ -26,6 +26,15 @@
               <label class="d-block mb-3">
                 <span>Password</span>
                 <input type="password" class="form-control" name="password" placeholder="<?= $item->id ? 'Only enter when you want to change your password' : '" required="required' ?>">
+              </label>
+              <label class="d-block mb-3">
+                <span>Avatar</span>
+                <?= view('shared/file', [
+                  'value' => $item->avatar,
+                  'name' => 'avatar',
+                  'path' => 'avatar',
+                  'disabled' => false,
+                ]) ?>
               </label>
               <label class="d-block mb-3">
                 <span>Role</span>

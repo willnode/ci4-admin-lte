@@ -1,5 +1,7 @@
 <?php
 
+use CodeIgniter\Entity;
+use CodeIgniter\HTTP\Files\UploadedFile;
 use Config\Services;
 
 /**
@@ -41,22 +43,46 @@ function find_with_filter(\CodeIgniter\Model $model, int $length = 500)
     return $r;
 }
 
-
-function get_gravatar( $email, $s = 80, $d = 'mp', $r = 'g' ) {
+function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g')
+{
     $url = 'https://www.gravatar.com/avatar/';
-    $url .= md5( strtolower( trim( $email ) ) );
+    $url .= md5(strtolower(trim($email)));
     $url .= "?s=$s&d=$d&r=$r";
     return $url;
 }
 
-function get_excerpt( $content, $length = 40, $more = '...' ) {
-	$excerpt = strip_tags( trim( $content ) );
-	$words = str_word_count( $excerpt, 2 );
-	if ( count( $words ) > $length ) {
-		$words = array_slice( $words, 0, $length, true );
-		end( $words );
-		$position = key( $words ) + strlen( current( $words ) );
-		$excerpt = substr( $excerpt, 0, $position ) . $more;
-	}
-	return $excerpt;
+function get_excerpt($content, $length = 40, $more = '...')
+{
+    $excerpt = strip_tags(trim($content));
+    $words = str_word_count($excerpt, 2);
+    if (count($words) > $length) {
+        $words = array_slice($words, 0, $length, true);
+        end($words);
+        $position = key($words) + strlen(current($words));
+        $excerpt = substr($excerpt, 0, $position) . $more;
+    }
+    return $excerpt;
+}
+
+/**
+ * @param string|null $file
+ */
+function post_file(Entity $entity, $name, string $folder = null)
+{
+    if (!is_dir($path  = WRITEPATH . implode(DIRECTORY_SEPARATOR, ['uploads', $folder ?? $name, '']))) {
+        mkdir($path, 0775, true);
+    }
+    $req = Services::request();
+    $file = $req->getFile($name);
+    if ($file && $file->isValid() && $file->move($path)) {
+        if ($entity->{$name} && is_file($path . $entity->{$name})) {
+            unlink($path . $entity->{$name});
+        }
+        $entity->{$name} = $file->getName();
+    } else if ($req->getPost('_'.$name) === 'delete') {
+        if ($entity->{$name} && is_file($path . $entity->{$name})) {
+            unlink($path . $entity->{$name});
+        }
+        $entity->{$name} = null;
+    }
 }

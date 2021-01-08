@@ -108,7 +108,15 @@ class Home extends BaseController
 
 	public function search()
 	{
-		return view('page/search');
+		$model = new ArticleModel();
+		if ($q = $this->request->getGet('q')) {
+			$model->withSearch($q);
+		}
+		return view('article/list', [
+			'data' => find_with_filter($model),
+			'page' => '',
+			'search' => $q,
+		]);
 	}
 
 	public function uploads($directory, $file)

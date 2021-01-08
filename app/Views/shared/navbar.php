@@ -25,7 +25,7 @@
   <!-- SEARCH FORM -->
   <form action="/search" class="form-inline ml-3">
     <div class="input-group input-group-sm">
-      <input class="form-control form-control-navbar" type="search" placeholder="Search Articles" aria-label="Search">
+      <input name="q" class="form-control text-white form-control-navbar" value="<?= esc($search ?? '') ?>" type="search" placeholder="Search Articles" aria-label="Search">
       <div class="input-group-append">
         <button class="btn btn-navbar" type="submit">
           <i class="fas fa-search"></i>
@@ -70,7 +70,7 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
         <li class="nav-item">
-          <a href="/" class="nav-link <?= ($page ?? '') == 'home' ? 'active' : ''?>">
+          <a href="/" class="nav-link <?= ($page ?? '') == 'home' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-home"></i>
             <p>
               Home
@@ -78,7 +78,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/category/news/" class="nav-link <?= ($page ?? '') == 'news' ? 'active' : ''?>">
+          <a href="/category/news/" class="nav-link <?= ($page ?? '') == 'news' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-newspaper"></i>
             <p>
               News
@@ -86,7 +86,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/category/info/" class="nav-link <?= ($page ?? '') == 'info' ? 'active' : ''?>">
+          <a href="/category/info/" class="nav-link <?= ($page ?? '') == 'info' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-info"></i>
             <p>
               Info

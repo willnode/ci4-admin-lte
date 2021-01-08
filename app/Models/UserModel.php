@@ -15,7 +15,7 @@ class UserModel extends Model
 
     protected $table         = 'user';
     protected $allowedFields = [
-        'name', 'email', 'password', 'role'
+        'name', 'email', 'password', 'avatar', 'role'
     ];
     protected $primaryKey = 'id';
     protected $returnType = 'App\Entities\User';
@@ -58,12 +58,14 @@ class UserModel extends Model
     {
         if ($id === null) {
             $item = (new User($_POST));
+            post_file($item, 'avatar');
             $item->password = password_hash($item->password, PASSWORD_BCRYPT);
             $id = $this->insert($item);
             return $id;
         } else if ($item = $this->find($id)) {
             /** @var User $item */
             $item->fill($_POST);
+            post_file($item, 'avatar');
             if ($item->hasChanged()) {
                 if ($item->hasChanged('password')) {
                     $item->password = password_hash($item->password, PASSWORD_BCRYPT);

@@ -3,13 +3,8 @@
 namespace App\Controllers;
 
 use App\Entities\Article;
-use App\Entities\Data;
-use App\Entities\Publication;
 use App\Entities\User as EntitiesUser;
-use App\Libraries\DataParser;
 use App\Models\ArticleModel;
-use App\Models\DataModel;
-use App\Models\PublicationModel;
 use App\Models\UserModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
@@ -52,13 +47,10 @@ class User extends BaseController
 			$model->withUser($this->login->id);
 		}
 		if ($this->request->getMethod() === 'post') {
-			if ($page === 'delete') {
-				$model->delete($id);
+			if ($page === 'delete' && $model->delete($id)) {
 				return $this->response->redirect('/user/article/');
-			} else {
-				$id = $model->processWeb($id);
-				if ($id)
-					return $this->response->redirect('/user/article/');
+			} else if ($id = $model->processWeb($id)) {
+				return $this->response->redirect('/user/article/');
 			}
 		}
 		switch ($page) {
@@ -89,13 +81,10 @@ class User extends BaseController
 		}
 		$model = new UserModel();
 		if ($this->request->getMethod() === 'post') {
-			if ($page === 'delete') {
-				$model->delete($id);
+			if ($page === 'delete' && $model->delete($id)) {
 				return $this->response->redirect('/user/manage/');
-			} else {
-				$id = $model->processWeb($id);
-				if ($id)
-					return $this->response->redirect('/user/manage/');
+			} else if ($id = $model->processWeb($id)) {
+				return $this->response->redirect('/user/manage/');
 			}
 		}
 		switch ($page) {
@@ -137,6 +126,11 @@ class User extends BaseController
 
 	public function profile()
 	{
+		if ($this->request->getMethod() === 'post') {
+			if ((new UserModel())->processWeb($this->login->id)) {
+				return $this->response->redirect('/user/profile/');
+			}
+		}
 		return view('page/profile', [
 			'item' => $this->login,
 		]);

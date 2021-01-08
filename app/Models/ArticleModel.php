@@ -29,6 +29,13 @@ class ArticleModel extends Model
         return $this;
     }
 
+    public function withSearch($q)
+    {
+        $this->builder()->like('content', $q);
+        $this->builder()->orLike('title', $q);
+        return $this;
+    }
+
     public function withUser($id)
     {
         $this->builder()->where('user_id', $id);

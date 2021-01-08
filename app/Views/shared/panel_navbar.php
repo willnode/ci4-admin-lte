@@ -34,14 +34,14 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="<?= get_gravatar( \Config\Services::login()->email, 80, 'identicon') ?>" alt="">
-        </div>
-        <div class="info">
-          <a href="/user/profile/" class="d-block"><?= \Config\Services::login()->name ?></a>
-        </div>
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="<?= \Config\Services::login()->getAvatarUrl() ?>" alt="">
       </div>
+      <div class="info">
+        <a href="/user/profile/" class="d-block"><?= \Config\Services::login()->name ?></a>
+      </div>
+    </div>
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
@@ -72,14 +72,14 @@
         </li>
 
         <?php if (\Config\Services::login()->role === 'admin') : ?>
-        <li class="nav-item">
-          <a href="/user/manage/" class="nav-link <?= ($page ?? '') === 'users' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-users"></i>
-            <p>
-              Users
-            </p>
-          </a>
-        </li>
+          <li class="nav-item">
+            <a href="/user/manage/" class="nav-link <?= ($page ?? '') === 'users' ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Users
+              </p>
+            </a>
+          </li>
         <?php endif ?>
       </ul>
     </nav>
