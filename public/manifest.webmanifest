@@ -1,0 +1,13 @@
+{
+    "name": "Template",
+    "short_name": "Template",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "Awesome Description",
+    "icons": [{
+        "src": "logo_144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+    }]
+}
