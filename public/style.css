@@ -1,0 +1,71 @@
+:root {
+    /* forgotten by admin-lte */
+    --navy: #001f3f;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #fff;
+    background-color: var(--navy);
+}
+
+.btn-link,
+a {
+    color: var(--navy);
+}
+
+.btn-link:hover,
+a:hover {
+    color: var(--secondary);
+}
+
+.bg-primary {
+    background-color: var(--navy) !important;
+    /* Bug in chrome doesn't let us use this */
+    transition: none;
+}
+
+.btn-outline-primary {
+    color: var(--navy);
+    border-color: var(--navy);
+    /* Bug in chrome doesn't let us use this */
+    transition: none;
+}
+
+.btn-primary, .btn-outline-primary:hover {
+    color: #fff;
+    background-color: var(--navy);
+    border-color: var(--navy);
+    /* Bug in chrome doesn't let us use this */
+    transition: none;
+}
+
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:hover,
+button.bg-primary:focus,
+button.bg-primary.focus,
+button.bg-primary:hover {
+    color: #fff;
+    background-image: linear-gradient(#fff3, #fff3);
+    background-color: var(--navy) !important;
+    border-color: var(--navy);
+}
+
+.bg-primary.btn.active,
+.bg-primary.btn:active,
+.bg-primary.btn:not(:disabled):not(.disabled).active,
+.bg-primary.btn:not(:disabled):not(.disabled):active,
+.btn-primary.btn.active,
+.btn-primary.btn:active,
+.btn-primary.btn:not(:disabled):not(.disabled).active,
+.btn-primary.btn:not(:disabled):not(.disabled):active,
+.btn-outline-primary.btn.active,
+.btn-outline-primary.btn:active,
+.btn-outline-primary.btn:not(:disabled):not(.disabled).active,
+.btn-outline-primary.btn:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-image: linear-gradient(#0005, #0005);
+    background-color: var(--navy) !important;
+    border-color: var(--navy);
+}

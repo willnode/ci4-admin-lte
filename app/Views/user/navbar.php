@@ -4,10 +4,10 @@
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
-    <li class="nav-item d-none d-sm-inline-block">
+    <li class="nav-item d-none d-sm-inline-block <?= ($page ?? '') === 'dashboard' ? 'active' : '' ?>">
       <a href="/user/" class="nav-link">Dashboard</a>
     </li>
-    <li class="nav-item d-none d-sm-inline-block">
+    <li class="nav-item d-none d-sm-inline-block <?= ($page ?? '') === 'profile' ? 'active' : '' ?>">
       <a href="/user/profile/" class="nav-link">Edit Profile</a>
     </li>
   </ul>
@@ -24,7 +24,7 @@
 </nav>
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-navy elevation-4">
   <!-- Brand Logo -->
   <a href="/" class="brand-link">
     <img src="/logo_dark.png" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
@@ -34,7 +34,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel my-3 py-2 d-flex rounded-lg <?= ($page ?? '') === 'profile' ? 'bg-navy' : '' ?>">
       <div class="image">
         <img src="<?= \Config\Services::login()->getAvatarUrl() ?>" alt="">
       </div>

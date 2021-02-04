@@ -4,7 +4,7 @@
 
 <body>
   <div class="wrapper">
-    <?= view('shared/navbar') ?>
+    <?= view('home/navbar') ?>
     <div class="content-wrapper p-4">
 
       <div class="row justify-content-center">

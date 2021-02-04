@@ -66,10 +66,14 @@ class UserModel extends Model
             /** @var User $item */
             $item->fill($_POST);
             post_file($item, 'avatar');
-            if ($item->hasChanged()) {
-                if ($item->hasChanged('password')) {
+            if ($item->hasChanged('password')) {
+                if (!$item->password) {
+                    $item->discardPassword();
+                } else {
                     $item->password = password_hash($item->password, PASSWORD_BCRYPT);
                 }
+            }
+            if ($item->hasChanged()) {
                 $this->save($item);
             }
             return $id;

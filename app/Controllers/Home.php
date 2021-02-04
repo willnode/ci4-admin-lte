@@ -12,7 +12,7 @@ class Home extends BaseController
 {
 	public function index()
 	{
-		return view('page/home', [
+		return view('home/index', [
 			'news' => find_with_filter((new ArticleModel())->withCategory('news'), 2),
 			'info' => find_with_filter((new ArticleModel())->withCategory('info'), 2),
 			'page' => 'home',
@@ -44,7 +44,7 @@ class Home extends BaseController
 			}
 			$m = lang('Interface.wrongLogin');
 		}
-		return view('page/login', [
+		return view('home/login', [
 			'message' => $m ?? (($_GET['msg'] ?? '') === 'emailsent' ? lang('Interface.emailSent') : null)
 		]);
 	}
@@ -53,7 +53,7 @@ class Home extends BaseController
 	{
 		$recaptha = new Recaptha();
 		if ($this->request->getMethod() === 'get') {
-			return view('page/register', [
+			return view('home/register', [
 				'errors' => $this->session->errors,
 				'recapthaSite' => $recaptha->recapthaSite,
 			]);
@@ -85,12 +85,13 @@ class Home extends BaseController
 
 		$model = new ArticleModel();
 		if ($id === null) {
-			return view('article/list', [
+			return view('home/article/list', [
 				'data' => $model->findAll(),
 			]);
 		} else if ($item = $model->find($id)) {
-			return view('article/view', [
-				'item' => $item
+			return view('home/article/view', [
+				'item' => $item,
+				'page' => $item->category,
 			]);
 		} else {
 			throw new PageNotFoundException();
@@ -100,7 +101,7 @@ class Home extends BaseController
 	public function category($name = null)
 	{
 		$model = new ArticleModel();
-		return view('article/list', [
+		return view('home/article/list', [
 			'data' => $model->withCategory($name)->findAll(),
 			'page' => $name,
 		]);
@@ -112,7 +113,7 @@ class Home extends BaseController
 		if ($q = $this->request->getGet('q')) {
 			$model->withSearch($q);
 		}
-		return view('article/list', [
+		return view('home/article/list', [
 			'data' => find_with_filter($model),
 			'page' => '',
 			'search' => $q,

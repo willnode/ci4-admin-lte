@@ -28,7 +28,7 @@ class User extends BaseController
 
 	public function index()
 	{
-		return view('page/dashboard', [
+		return view('user/dashboard', [
 			'page' => 'dashboard'
 		]);
 	}
@@ -55,19 +55,19 @@ class User extends BaseController
 		}
 		switch ($page) {
 			case 'list':
-				return view('article/manage', [
+				return view('user/article/list', [
 					'data' => find_with_filter(empty($_GET['category']) ? $model : $model->withCategory($_GET['category'])),
 					'page' => 'article',
 				]);
 			case 'add':
-				return view('article/edit', [
+				return view('user/article/edit', [
 					'item' => new Article()
 				]);
 			case 'edit':
 				if (!($item = $model->find($id))) {
 					throw new PageNotFoundException();
 				}
-				return view('article/edit', [
+				return view('user/article/edit', [
 					'item' => $item
 				]);
 		}
@@ -89,19 +89,19 @@ class User extends BaseController
 		}
 		switch ($page) {
 			case 'list':
-				return view('users/manage', [
+				return view('user/users/list', [
 					'data' => find_with_filter($model),
 					'page' => 'users',
 				]);
 			case 'add':
-				return view('users/edit', [
+				return view('user/users/edit', [
 					'item' => new EntitiesUser()
 				]);
 			case 'edit':
 				if (!($item = $model->find($id))) {
 					throw new PageNotFoundException();
 				}
-				return view('users/edit', [
+				return view('user/users/edit', [
 					'item' => $item
 				]);
 		}
@@ -110,6 +110,7 @@ class User extends BaseController
 
 	public function uploads($directory)
 	{
+		// to upload general files (summernote)
 		$path = WRITEPATH . implode(DIRECTORY_SEPARATOR, ['uploads', $directory, '']);
 		$r = $this->request;
 		if (!is_dir($path))
@@ -131,8 +132,9 @@ class User extends BaseController
 				return $this->response->redirect('/user/profile/');
 			}
 		}
-		return view('page/profile', [
+		return view('user/profile', [
 			'item' => $this->login,
+			'page' => 'profile',
 		]);
 	}
 }

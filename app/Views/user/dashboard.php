@@ -4,7 +4,7 @@
 
 <body>
   <div class="wrapper">
-    <?= view('shared/panel_navbar') ?>
+    <?= view('user/navbar') ?>
     <div class="content-wrapper p-4">
       <div class="container" style="max-width: 720px;">
         <div class="card">

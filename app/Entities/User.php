@@ -17,7 +17,6 @@ class User extends Entity
     protected $casts = [
         'id' => 'integer',
     ];
-
     public function sendVerifyEmail()
     {
         // TODO
@@ -28,5 +27,9 @@ class User extends Entity
             return '/uploads/avatar/' . $this->avatar;
         else
             return get_gravatar($this->email, 80, 'identicon');
+    }
+    public function discardPassword()
+    {
+        $this->attributes['password'] = $this->original['password'];
     }
 }

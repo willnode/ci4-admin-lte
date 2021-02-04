@@ -17,6 +17,7 @@ class CreateLogin extends Migration
             `avatar` VARCHAR(255) NULL DEFAULT NULL,
             `password` VARCHAR(255) NULL DEFAULT NULL,
             `role` VARCHAR(50) NULL DEFAULT NULL,
+            `otp` VARCHAR(50) NULL DEFAULT NULL,
             PRIMARY KEY (`id`),
             UNIQUE INDEX `email` (`email`),
             INDEX `role` (`role`)

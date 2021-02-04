@@ -5,19 +5,13 @@
 
 <body>
   <div class="wrapper">
-    <?= view('shared/panel_navbar') ?>
+    <?= view('user/navbar') ?>
     <div class="content-wrapper p-4">
       <div class="container">
         <div class="card">
           <div class="card-body">
-            <?php /** @var \App\Entities\Article[] $data */ ?>
+            <?php /** @var \App\Entities\User[] $data */ ?>
             <div class="d-flex">
-              <form method="get" class="btn-group">
-                <?= implode('', array_map(function ($x) {
-                  return '<button type="submit" name="category" class="btn btn-primary ' . (($_GET['category'] ?? '') === $x ? 'active' : '') .
-                    '" value="' . $x . '">' . ucfirst($x) . '</button>';
-                }, \App\Models\ArticleModel::$categories)) ?>
-              </form>
               <div class="ml-auto">
                 <?= view('shared/button', [
                   'actions' => ['add'],
@@ -29,16 +23,16 @@
             <?= view('shared/table', [
               'data' => $data,
               'columns' => [
-                'Title' => function (\App\Entities\Article $x) {
-                  return $x->title;
+                'Nama' => function (\App\Entities\User $x) {
+                  return $x->name;
                 },
-                'Author' => function (\App\Entities\Article $x) {
-                  return $x->user->name;
+                'Email' => function (\App\Entities\User $x) {
+                  return $x->email;
                 },
-                'Updated' => function (\App\Entities\Article $x) {
-                  return $x->updated_at;
+                'Role' => function (\App\Entities\User $x) {
+                  return ucfirst($x->role);
                 },
-                'Edit' => function (\App\Entities\Article $x) {
+                'Edit' => function (\App\Entities\User $x) {
                   return view('shared/button', [
                     'actions' => ['edit'],
                     'target' => $x->id,

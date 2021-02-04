@@ -4,7 +4,7 @@
 
 <body>
   <div class="wrapper">
-    <?= view('shared/panel_navbar') ?>
+    <?= view('user/navbar') ?>
     <?php /** @var \App\Entities\Article $item */ ?>
     <div class="content-wrapper p-4">
       <div class="container">
