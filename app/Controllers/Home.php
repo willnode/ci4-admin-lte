@@ -124,6 +124,7 @@ class Home extends BaseController
 	{
 		$path = WRITEPATH . implode(DIRECTORY_SEPARATOR, ['uploads', $directory, $file]);
 		if ($file && is_file($path)) {
+			check_etag($path);
 			header('Content-Type: ' . mime_content_type($path));
 			header('Content-Length: ' . filesize($path));
 			readfile($path);

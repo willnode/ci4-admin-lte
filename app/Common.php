@@ -1,7 +1,7 @@
 <?php
 
 use CodeIgniter\Entity;
-use CodeIgniter\HTTP\Files\UploadedFile;
+use CodeIgniter\I18n\Time;
 use Config\Services;
 
 /**
@@ -64,9 +64,6 @@ function get_excerpt($content, $length = 40, $more = '...')
     return $excerpt;
 }
 
-/**
- * @param string|null $file
- */
 function post_file(Entity $entity, $name, string $folder = null)
 {
     if (!is_dir($path  = WRITEPATH . implode(DIRECTORY_SEPARATOR, ['uploads', $folder ?? $name, '']))) {
@@ -79,10 +76,95 @@ function post_file(Entity $entity, $name, string $folder = null)
             unlink($path . $entity->{$name});
         }
         $entity->{$name} = $file->getName();
-    } else if ($req->getPost('_'.$name) === 'delete') {
+    } else if ($req->getPost('_' . $name) === 'delete') {
         if ($entity->{$name} && is_file($path . $entity->{$name})) {
             unlink($path . $entity->{$name});
         }
         $entity->{$name} = null;
+    }
+}
+
+function post_files(Entity $entity, $name, string $folder = null)
+{
+    if (!is_dir($path  = WRITEPATH . implode(DIRECTORY_SEPARATOR, ['uploads', $folder ?? $name, '']))) {
+        mkdir($path, 0775, true);
+    }
+    $req = Services::request();
+    $files = $req->getFileMultiple($name);
+    $new_files = [];
+    foreach ($files as $file) {
+        if ($file && $file->isValid() && $file->move($path)) {
+            $new_files[] = $file->getName();
+        }
+    }
+    if ($new_files && is_array($entity->{$name})) {
+        foreach ($entity->{$name} as $old_file) {
+            if ($old_file && is_file($path . $old_file)) {
+                unlink($path . $old_file);
+            }
+        }
+        $entity->{$name} = $new_files;
+    }
+}
+
+function humanize(Time $time)
+{
+    $now  = IntlCalendar::fromDateTime(Time::now($time->timezone)->toDateTimeString());
+    $time = $time->getCalendar()->getTime();
+
+    $years   = $now->fieldDifference($time, IntlCalendar::FIELD_YEAR);
+    $months  = $now->fieldDifference($time, IntlCalendar::FIELD_MONTH);
+    $days    = $now->fieldDifference($time, IntlCalendar::FIELD_DAY_OF_YEAR);
+    $hours   = $now->fieldDifference($time, IntlCalendar::FIELD_HOUR_OF_DAY);
+    $minutes = $now->fieldDifference($time, IntlCalendar::FIELD_MINUTE);
+
+    $phrase = null;
+
+    if ($years !== 0) {
+        $phrase = lang('Time.years', [abs($years)]);
+        $before = $years < 0;
+    } else if ($months !== 0) {
+        $phrase = lang('Time.months', [abs($months)]);
+        $before = $months < 0;
+    } else if ($days !== 0 && (abs($days) >= 7)) {
+        $weeks  = ceil($days / 7);
+        $phrase = lang('Time.weeks', [abs($weeks)]);
+        $before = $days < 0;
+    } else if ($days !== 0) {
+        $before = $days < 0;
+
+        // Yesterday/Tomorrow special cases
+        if (abs($days) === 1) {
+            return $before ? lang('Time.yesterday') : lang('Time.tomorrow');
+        }
+
+        $phrase = lang('Time.days', [abs($days)]);
+    } else if ($hours !== 0) {
+        $phrase = lang('Time.hours', [abs($hours)]);
+        $before = $hours < 0;
+    } else if ($minutes !== 0) {
+        $phrase = lang('Time.minutes', [abs($minutes)]);
+        $before = $minutes < 0;
+    } else {
+        return lang('Time.now');
+    }
+
+    return $before ? lang('Time.ago', [$phrase]) : lang('Time.inFuture', [$phrase]);
+}
+
+function check_etag($path)
+{
+    $last_modified_time = filemtime($path);
+    $etag = md5_file($path);
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s", $last_modified_time) . " GMT");
+    header("Etag: $etag");
+    header("Cache-Control: public");
+    header_remove('Pragma');
+    if (
+        strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'] ?? '') == $last_modified_time ||
+        trim($_SERVER['HTTP_IF_NONE_MATCH'] ?? '') == $etag
+    ) {
+        header("HTTP/1.1 304 Not Modified");
+        exit;
     }
 }
