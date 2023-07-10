@@ -4,7 +4,7 @@ namespace Config;
 
 use App\Entities\User;
 use App\Models\UserModel;
-use CodeIgniter\Config\Services as CoreServices;
+use CodeIgniter\Config\BaseService;
 
 /**
  * Services Configuration file.
@@ -19,7 +19,7 @@ use CodeIgniter\Config\Services as CoreServices;
  * method format you should use for your service methods. For more examples,
  * see the core Services file at system/Config/Services.php.
  */
-class Services extends CoreServices
+class Services extends BaseService
 {
 
 	/** @return User */
