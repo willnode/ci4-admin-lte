@@ -60,7 +60,7 @@ class Home extends BaseController
 		} else {
 			if ($this->validate([
 				'name' => 'required|min_length[3]|max_length[255]',
-				'email' => 'required|valid_email|is_unique[login.email]',
+				'email' => 'required|valid_email|is_unique[user.email]',
 				'password' => 'required|min_length[8]',
 				'g-recaptcha-response' => ENVIRONMENT === 'production' && $recaptha->recapthaSecret ? 'required' : 'permit_empty',
 			])) {
