@@ -13,12 +13,16 @@ use Exception;
 
 class BaseExcelProcessor
 {
+    // db to import / export
     public $table;
 
+    // array of object { key, title }
     public $columns;
 
+    // first arg: array row from excel, return array row to insert
     public $importModifier = null;
 
+    // first arg: array row from data, return array row to excel
     public $exportModifier = null;
 
     public function exportAndSend(array $data, string $filename = null)
@@ -106,7 +110,7 @@ class BaseExcelProcessor
         foreach (array_map(function ($x) {
             return $x['title'] ?? ucfirst($x['key']);
         }, $this->columns) as $key => $value) {
-            $sheet->getCellByColumnAndRow($key + 1, 1)->setValue($value);
+            $sheet->getCell([$key + 1, 1])->setValue($value);
             $spreadsheet->getActiveSheet()->getColumnDimensionByColumn($key + 1)->setAutoSize(true);
         }
         foreach ($data as $i => $row) {
@@ -119,7 +123,7 @@ class BaseExcelProcessor
                 }
             }
             foreach ($this->columns as $c => $column) {
-                $sheet->getCellByColumnAndRow($c + 1, $i + 2)->setValue($row->{$column['key']} ?? '');
+                $sheet->getCell([$c + 1, $i + 2])->setValue($row->{$column['key']} ?? '');
             }
         }
 
