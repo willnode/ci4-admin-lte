@@ -46,7 +46,7 @@ class User extends BaseController
 		if ($this->login->role !== 'admin') {
 			$model->withUser($this->login->id);
 		}
-		if ($this->request->getMethod() === 'post') {
+		if ($this->request->getMethod() === 'POST') {
 			if ($page === 'delete' && $model->delete($id)) {
 				return $this->response->redirect('/user/article/');
 			} else if ($id = $model->processWeb($id)) {
@@ -80,7 +80,7 @@ class User extends BaseController
 			throw new PageNotFoundException();
 		}
 		$model = new UserModel();
-		if ($this->request->getMethod() === 'post') {
+		if ($this->request->getMethod() === 'POST') {
 			if ($page === 'delete' && $model->delete($id)) {
 				return $this->response->redirect('/user/manage/');
 			} else if ($id = $model->processWeb($id)) {
@@ -115,7 +115,7 @@ class User extends BaseController
 		$r = $this->request;
 		if (!is_dir($path))
 			mkdir($path, 0775, true);
-		if ($r->getMethod() === 'post') {
+		if ($r->getMethod() === 'POST') {
 			if (($f = $r->getFile('file')) && $f->isValid()) {
 				if ($f->move($path)) {
 					return $f->getName();
@@ -127,7 +127,7 @@ class User extends BaseController
 
 	public function profile()
 	{
-		if ($this->request->getMethod() === 'post') {
+		if ($this->request->getMethod() === 'POST') {
 			if ((new UserModel())->processWeb($this->login->id)) {
 				return $this->response->redirect('/user/profile/');
 			}

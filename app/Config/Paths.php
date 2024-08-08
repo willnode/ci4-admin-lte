@@ -12,6 +12,11 @@ namespace Config;
  * share a system folder between multiple applications, and more.
  *
  * All paths are relative to the project's root folder.
+ *
+ * NOTE: This class is required prior to Autoloader instantiation,
+ *       and does not extend BaseConfig.
+ *
+ * @immutable
  */
 class Paths
 {
@@ -23,7 +28,7 @@ class Paths
      * This must contain the name of your "system" folder. Include
      * the path if the folder is not in the same directory as this file.
      */
-	public $systemDirectory = __DIR__ . '/../../vendor/codeigniter4/framework/system';
+    public $systemDirectory = __DIR__ . '/../../vendor/codeigniter4/framework/system';
 
     /**
      * ---------------------------------------------------------------

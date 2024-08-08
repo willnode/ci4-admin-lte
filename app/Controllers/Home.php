@@ -27,7 +27,7 @@ class Home extends BaseController
 		if ($r = $this->request->getGet('r')) {
 			return $this->response->setCookie('r', $r, 0)->redirect('/login/');
 		}
-		if ($this->request->getMethod() === 'post') {
+		if ($this->request->getMethod() === 'POST') {
 			$post = $this->request->getPost();
 			if (isset($post['email'], $post['password'])) {
 				$login = (new UserModel())->atEmail($post['email']);
@@ -52,7 +52,7 @@ class Home extends BaseController
 	public function register()
 	{
 		$recaptha = new Recaptha();
-		if ($this->request->getMethod() === 'get') {
+		if ($this->request->getMethod() === 'GET') {
 			return view('home/register', [
 				'errors' => $this->session->errors,
 				'recapthaSite' => $recaptha->recapthaSite,

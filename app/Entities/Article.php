@@ -3,7 +3,7 @@
 namespace App\Entities;
 
 use App\Models\UserModel;
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 use CodeIgniter\I18n\Time;
 
 /**
