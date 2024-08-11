@@ -16,7 +16,7 @@ class BaseExcelProcessor
     // db to import / export
     public $table;
 
-    // array of object { key, title }
+    // array of object { key, title } represent excel columns
     public $columns;
 
     // first arg: array row from excel, return array row to insert
@@ -106,10 +106,11 @@ class BaseExcelProcessor
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        /* header */
-        foreach (array_map(function ($x) {
+        $columns = array_map(function ($x) {
             return $x['title'] ?? ucfirst($x['key']);
-        }, $this->columns) as $key => $value) {
+        }, $this->columns);
+        /* header */
+        foreach ($columns as $key => $value) {
             $sheet->getCell([$key + 1, 1])->setValue($value);
             $spreadsheet->getActiveSheet()->getColumnDimensionByColumn($key + 1)->setAutoSize(true);
         }
